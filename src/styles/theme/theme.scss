@@ -27,6 +27,10 @@ $app-theme-dark: mat-dark-theme(
   )
 );
 
+@include angular-material-theme($app-theme-light);
+@include app-components-theme($app-theme-light);
+
+/**
 .light {
   @include angular-material-theme($app-theme-light);
   @include app-components-theme($app-theme-light);
@@ -35,4 +39,4 @@ $app-theme-dark: mat-dark-theme(
 .dark {
   @include angular-material-theme($app-theme-dark);
   @include app-components-theme($app-theme-dark);
-}
+}*/
