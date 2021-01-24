@@ -1,0 +1,9 @@
+<h1 mat-dialog-title>{{ task }}</h1>
+<div mat-dialog-content>
+  <app-credentials-form
+    [submitButtonName]="task"
+    (submit)="submit($event, task)"
+    (cancel)="cancel()"
+  >
+  </app-credentials-form>
+</div>
