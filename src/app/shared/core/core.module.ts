@@ -4,7 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from './material/material.module';
 
 /**
- * Internal module for shared modules.
+ * Core module for sharing base modules.
  */
 @NgModule({
   exports: [CommonModule, MaterialModule, ReactiveFormsModule],
