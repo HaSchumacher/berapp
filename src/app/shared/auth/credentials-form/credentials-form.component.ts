@@ -24,6 +24,9 @@ export class CredentialsFormComponent {
   @Input()
   public submitButtonName: string = 'Submit';
 
+  @Input()
+  public error: Error;
+
   get emailControl(): FormControl {
     return this.form.controls[this._emailControl] as FormControl;
   }
