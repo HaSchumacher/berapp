@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
-import { SharedModule } from '@shared/shared.module';
-import { CredentialsFormComponent } from './credentials-form/credentials-form.component';
-import { AuthDialogComponent } from './auth-dialog/auth-dialog.component';
-import { AuthButtonComponent } from './auth-button/auth-button.component';
+import { CredentialsFormComponent } from './credentials-form';
+import { AuthDialogComponent } from './auth-dialog';
+import { AuthButtonComponent } from './auth-button';
+import { CoreModule } from '@shared/core';
 
 @NgModule({
   declarations: [
@@ -10,7 +10,7 @@ import { AuthButtonComponent } from './auth-button/auth-button.component';
     AuthDialogComponent,
     AuthButtonComponent,
   ],
-  imports: [SharedModule],
+  imports: [CoreModule],
   exports: [AuthButtonComponent],
 })
 export class AuthModule {}
