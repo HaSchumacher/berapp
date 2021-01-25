@@ -38,13 +38,17 @@ export class AuthButtonComponent {
     [AuthTask.SIGN_OUT, (_, auth) => auth.signOut()],
   ]);
 
+  @Input()
+  public color: string = 'accent';
+
+  @Input()
+  public task: AuthTask;
+
   constructor(
     private readonly dialog: MatDialog,
     @Inject(AUTHENTICATOR)
     private readonly auth: CanAuthenticate
   ) {}
-
-  @Input() public task: AuthTask;
 
   /** Executes an auth task
    *
