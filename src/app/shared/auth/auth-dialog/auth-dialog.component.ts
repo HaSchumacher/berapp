@@ -26,12 +26,18 @@ export class AuthDialogComponent {
     ],
   ]);
 
+  private _error: Error;
+
   constructor(
     private readonly dialogRef: MatDialogRef<AuthDialogComponent>,
     @Inject(AUTHENTICATOR)
     private readonly auth: CanAuthenticate,
     @Inject(MAT_DIALOG_DATA) public task: AuthTask
   ) {}
+
+  get error(): Error {
+    return this._error;
+  }
 
   /**
    * Closes the dialog
@@ -49,6 +55,9 @@ export class AuthDialogComponent {
     return AuthDialogComponent.AUTH_TASKS.get(task)(
       credentials,
       this.auth
-    ).then(() => this.dialogRef.close());
+    ).then(
+      (_) => this.dialogRef.close(),
+      (error) => (this._error = error)
+    );
   }
 }
