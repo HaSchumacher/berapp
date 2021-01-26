@@ -5,8 +5,17 @@
     </button>
     <button mat-button>{{ store.appName }}</button>
     <span class="flex-spacer"></span>
-    <app-auth-button color="" task="Sign In"></app-auth-button>
-    <app-auth-button color="" task="Sign Up"></app-auth-button>
+    <ng-container
+      *ngIf="(store.user$ | async) !== undefined"
+      [ngSwitch]="(store.user$ | async) == null"
+    >
+      <app-auth-button *ngSwitchCase="true" color="" task="Sign In">
+      </app-auth-button>
+      <app-auth-button *ngSwitchCase="true" color="" task="Sign Up">
+      </app-auth-button>
+      <app-auth-button *ngSwitchCase="false" color="" task="Sign Out">
+      </app-auth-button>
+    </ng-container>
   </mat-toolbar>
 
   <mat-sidenav-container id="sidenavContainer">
