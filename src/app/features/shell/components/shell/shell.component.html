@@ -1,0 +1,22 @@
+<div id="shellContainer">
+  <mat-toolbar id="header" color="primary">
+    <button mat-icon-button (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <button mat-button>{{ store.appName }}</button>
+    <span class="flex-spacer"></span>
+    <app-auth-button color="" task="Sign In"></app-auth-button>
+    <app-auth-button color="" task="Sign Up"></app-auth-button>
+  </mat-toolbar>
+
+  <mat-sidenav-container id="sidenavContainer">
+    <mat-sidenav
+      #sidenav
+      id="sidenav"
+      [opened]="!(media.small$ | async)"
+      [mode]="(media.small$ | async) ? 'over' : 'side'"
+    >
+    </mat-sidenav>
+    <mat-sidenav-content id="sidenavContent"> </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
