@@ -20,6 +20,8 @@
       "@shared": ["src/app/shared"],
       "@model/*": ["src/app/model/*"],
       "@model": ["src/app/model"],
+      "@utilities/*": ["src/app/utilities/*"],
+      "@utilities": ["src/app/utilities"],
       "@features/*": ["src/app/features/*"]
     }
   }

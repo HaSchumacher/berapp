@@ -8,7 +8,7 @@
     left: 0;
     right: 0;
     > #header {
-      position: fixed;
+      position: sticky;
       z-index: 2;
     }
     > #sidenavContainer {

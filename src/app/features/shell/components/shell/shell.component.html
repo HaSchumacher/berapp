@@ -26,6 +26,8 @@
       [mode]="(media.small$ | async) ? 'over' : 'side'"
     >
     </mat-sidenav>
-    <mat-sidenav-content id="sidenavContent"> </mat-sidenav-content>
+    <mat-sidenav-content id="sidenavContent">
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
   </mat-sidenav-container>
 </div>

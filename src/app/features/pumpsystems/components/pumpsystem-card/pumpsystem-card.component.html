@@ -1,0 +1,14 @@
+<mat-card *ngIf="pumpsystem">
+  <mat-card-header>
+    <mat-card-title>
+      {{ pumpsystem.name }}
+    </mat-card-title>
+    <mat-card-subtitle> {{ pumpsystem.slots.length }} slots </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <p>{{ pumpsystem.slots | json }}</p>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button color="accent">Details</button>
+  </mat-card-actions>
+</mat-card>

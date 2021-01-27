@@ -56,7 +56,7 @@ export class AuthDialogComponent {
       credentials,
       this.auth
     ).then(
-      (_) => this.dialogRef.close(),
+      (data) => this.dialogRef.close(data),
       (error) => (this._error = error)
     );
   }
