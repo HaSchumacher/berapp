@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, Optional } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { UserCredential, User } from '@firebase/auth-types';
+import { Logger, LOGGER } from '@model/logging';
 import { CanAuthenticate } from '@model/auth';
 import { Observable } from 'rxjs';
-import { shareReplay } from 'rxjs/operators';
+import { shareReplay, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -11,8 +12,14 @@ import { shareReplay } from 'rxjs/operators';
 export class AuthService implements CanAuthenticate {
   public readonly user$: Observable<User>;
 
-  constructor(private readonly firebaseAuth: AngularFireAuth) {
-    this.user$ = firebaseAuth.user.pipe(shareReplay(1));
+  constructor(
+    private readonly firebaseAuth: AngularFireAuth,
+    @Inject(LOGGER) @Optional() private readonly logger: Logger
+  ) {
+    this.user$ = firebaseAuth.user.pipe(
+      tap(({ email, uid }) => this.logger?.trace('User', { email, uid })),
+      shareReplay(1)
+    );
   }
 
   public async signIn(
@@ -22,11 +29,11 @@ export class AuthService implements CanAuthenticate {
     return this.firebaseAuth.signInWithEmailAndPassword(email, password);
   }
 
-  signup(email: string, password: string): Promise<any> {
+  public async signup(email: string, password: string): Promise<any> {
     return this.firebaseAuth.createUserWithEmailAndPassword(email, password);
   }
 
-  signOut(): Promise<void> {
+  public async signOut(): Promise<void> {
     return this.firebaseAuth.signOut();
   }
 }
