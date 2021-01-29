@@ -9,5 +9,4 @@ import { Pumpsystem } from '@model/pumpsystem';
 export class PumpsystemCardComponent {
   @Input()
   public pumpsystem: Pumpsystem;
-  constructor() {}
 }

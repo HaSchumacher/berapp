@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Pumpsystem } from '@model/pumpsystem';
+import { Pumpsystem, Slot } from '@model/pumpsystem';
 import { Observable } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { User } from '@model/auth';
 import firebase from '@firebase/app';
 import '@firebase/firestore';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -26,5 +27,20 @@ export class PumpsystemService {
         ref.where('__name__', 'in', Object.keys(of.data.permissions))
       )
       .valueChanges({ idField: this.ID_MAPPER });
+  }
+
+  public getSlots(
+    from: Date,
+    to: Date,
+    pumpsystemId: string,
+    slotId: string
+  ): Observable<Slot[]> {
+    return this.firestore
+      .collection(this.PUMPSYSTEM_COLLECTION)
+      .doc(pumpsystemId)
+      .collection<Slot>(slotId, (ref) =>
+        ref.where('from', '<=', from).where('from', '<=', to)
+      )
+      .valueChanges();
   }
 }

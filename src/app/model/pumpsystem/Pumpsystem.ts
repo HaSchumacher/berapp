@@ -1,5 +1,5 @@
 export interface Pumpsystem {
   readonly name: string;
-  readonly slots: String[];
+  readonly slots: string[];
   readonly id: string;
 }
