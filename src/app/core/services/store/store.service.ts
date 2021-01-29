@@ -25,7 +25,7 @@ export class StoreService {
           ? this.user.getData(user).pipe(map((data) => ({ data, ...user })))
           : of(user)
       ),
-      tap((user) => this.logger?.trace('User', user, user?.uid, user?.data)),
+      tap((user) => this.logger?.trace('User', user?.data)),
       shareReplay(1)
     );
     this._pumpsystems$ = this.user$.pipe(

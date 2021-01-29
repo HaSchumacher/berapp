@@ -11,8 +11,12 @@ import '@firebase/firestore';
 })
 export class PumpsystemService {
   private readonly PUMPSYSTEM_COLLECTION: string = 'pumpsystems';
+  private readonly ID_MAPPER: string;
 
-  constructor(private readonly firestore: AngularFirestore) {}
+  constructor(private readonly firestore: AngularFirestore) {
+    let helper: Pick<Pumpsystem, 'id'> = { id: null };
+    this.ID_MAPPER = Object.keys(helper)[0];
+  }
 
   public getPumpSystems(of: User): Observable<Pumpsystem[]> {
     if (of == null || of.data == null || of.data.permissions == null)
@@ -21,6 +25,6 @@ export class PumpsystemService {
       .collection<Pumpsystem>(this.PUMPSYSTEM_COLLECTION, (ref) =>
         ref.where('__name__', 'in', Object.keys(of.data.permissions))
       )
-      .valueChanges();
+      .valueChanges({ idField: this.ID_MAPPER });
   }
 }

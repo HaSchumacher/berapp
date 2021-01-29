@@ -1,10 +1,9 @@
-import { Inject, Injectable, Optional } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { UserCredential, User } from '@firebase/auth-types';
-import { LOGGER, Logger } from '@model';
 import { CanAuthenticate } from '@model/auth';
 import { Observable } from 'rxjs';
-import { shareReplay, startWith, tap } from 'rxjs/operators';
+import { shareReplay, startWith } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',

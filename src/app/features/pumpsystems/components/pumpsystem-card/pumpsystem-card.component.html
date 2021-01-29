@@ -9,6 +9,8 @@
     <p>{{ pumpsystem.slots | json }}</p>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-raised-button color="accent">Details</button>
+    <button mat-raised-button color="accent" [routerLink]="pumpsystem.id">
+      Details
+    </button>
   </mat-card-actions>
 </mat-card>
