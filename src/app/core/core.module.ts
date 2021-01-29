@@ -11,6 +11,7 @@ import { LoggerModule, NGXLogger } from 'ngx-logger';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '@core/services';
 import { HttpClientModule } from '@angular/common/http';
+import { USER_SELECT_ROLES_DATA } from '@shared/user';
 
 @NgModule({
   imports: [
@@ -27,6 +28,10 @@ import { HttpClientModule } from '@angular/common/http';
     {
       provide: AUTHENTICATOR,
       useExisting: AuthService,
+    },
+    {
+      provide: USER_SELECT_ROLES_DATA,
+      useValue: ['admin', 'writer', 'reader'], //TODO fetch from firestore
     },
     {
       provide: LOGGER,

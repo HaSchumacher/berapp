@@ -5,14 +5,11 @@ export interface User extends FireBaseUser {
 }
 
 export interface UserData {
+  superadmin: boolean;
   name: string;
   permissions: Permissions;
+  id: string;
+  email: string;
 }
 
-export type Permissions = Record<string, Role>;
-
-export enum Role {
-  ADMIN = 'admin',
-  WRITER = 'writer',
-  READER = 'reader',
-}
+export type Permissions = Record<string, string>;

@@ -1,0 +1,9 @@
+@import "variables.scss";
+
+.user-permissions-container {
+  padding: $spacing-small 0;
+  > .user-permissions {
+    display: flex;
+    flex-direction: column;
+  }
+}

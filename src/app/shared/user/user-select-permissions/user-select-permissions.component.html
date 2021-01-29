@@ -1,0 +1,16 @@
+<section class="user-permissions-container" *ngIf="user">
+  <h3>Permissions</h3>
+  <section class="user-permissions" *ngIf="user?.permissions">
+    <mat-form-field *ngFor="let permission of user.permissions | keyvalue">
+      <mat-label>{{ permission.key }}</mat-label>
+      <mat-select
+        (valueChange)="onSelectionChange(permission.key, $event)"
+        [value]="permission.value"
+      >
+        <mat-option [value]="role" *ngFor="let role of roles">
+          {{ role }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </section>
+</section>

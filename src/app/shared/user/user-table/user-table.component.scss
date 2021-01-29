@@ -1,0 +1,11 @@
+.user-table {
+  width: 100%;
+}
+.user-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+.user-detail-row td {
+  border-bottom-width: 0;
+}
