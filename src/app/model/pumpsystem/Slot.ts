@@ -1,7 +1,10 @@
-export interface Slot {
+export interface SlotData {
   readonly from: Date;
   readonly to: Date;
   readonly by: string;
 }
 
-export type Slots = Array<Slot>;
+export interface Slot {
+  id: string;
+  data: SlotData[];
+}

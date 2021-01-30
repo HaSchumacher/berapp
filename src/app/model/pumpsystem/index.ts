@@ -1,2 +1,2 @@
 export { Pumpsystem } from './Pumpsystem';
-export { Slots, Slot } from './Slot';
+export { Slot, SlotData } from './Slot';
