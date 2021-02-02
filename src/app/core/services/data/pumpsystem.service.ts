@@ -23,7 +23,9 @@ export class PumpsystemService {
     let helper: Pick<Pumpsystem, 'id'> = { id: null };
     this.ID_MAPPER = Object.keys(helper)[0];
   }
-
+  /**TODO query 'in' applicable for only 10 values 
+   * workaround split query at 10 
+  */
   public getPumpSystems(of: User): Observable<Pumpsystem[]> {
     if (of == null || of.data == null || of.data.permissions == null)
       throw new Error(`No permissions in ${of}`);
