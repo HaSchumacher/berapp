@@ -168,11 +168,11 @@ export class PumpsystemService {
               );
 
             const bestRangeToLast = data.from.getTime() - bestLast.to.getTime();
-            const bestRangeToNext = data.to.getTime() - bestNext.from.getTime();
+            const bestRangeToNext = bestNext.from.getTime() - data.to.getTime();
             const currentRangeToLast =
               data.from.getTime() - currentLast.to.getTime();
             const currentRangeToNext =
-              data.to.getTime() - currentNext.from.getTime();
+              currentNext.from.getTime() - data.to.getTime();
 
             return bestRangeToLast + bestRangeToNext >
               currentRangeToLast + currentRangeToNext
