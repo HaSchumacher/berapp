@@ -1,0 +1,35 @@
+<form [formGroup]="addSlotForm" id="addSlotForm" (ngSubmit)="_onSubmit()">
+  <mat-form-field id="fromDate">
+    <mat-label>From</mat-label>
+    <input
+      [formControlName]="controlName_fromDate"
+      matInput
+      [matDatepicker]="addPickerFrom"
+    />
+    <mat-datepicker-toggle matSuffix [for]="addPickerFrom">
+    </mat-datepicker-toggle>
+    <mat-datepicker #addPickerFrom></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field id="fromTime">
+    <mat-label></mat-label>
+    <input [formControlName]="controlName_fromTime" matInput type="time" />
+  </mat-form-field>
+  <mat-form-field id="toDate">
+    <mat-label>To</mat-label>
+    <input
+      [formControlName]="controlName_toDate"
+      matInput
+      [matDatepicker]="addPickerTo"
+    />
+    <mat-datepicker-toggle matSuffix [for]="addPickerTo">
+    </mat-datepicker-toggle>
+    <mat-datepicker #addPickerTo></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field id="toTime">
+    <mat-label></mat-label>
+    <input [formControlName]="controlName_toTime" matInput type="time" />
+  </mat-form-field>
+  <button id="submitButton" mat-raised-button color="accent" type="submit">
+    Add Slot
+  </button>
+</form>

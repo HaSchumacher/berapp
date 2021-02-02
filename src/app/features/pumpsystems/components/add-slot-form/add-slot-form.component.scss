@@ -1,0 +1,28 @@
+@import "variables.scss";
+
+#addSlotForm {
+  display: grid;
+  gap: $spacing-small;
+  grid-template-columns: max-content max-content;
+  grid-template-areas: "fromDate fromTime" "toDate toTime" "submitBtn submitBtn";
+}
+
+#fromDate {
+  grid-area: fromDate;
+}
+
+#fromTime {
+  grid-area: fromTime;
+}
+
+#toDate {
+  grid-area: toDate;
+}
+
+#toTime {
+  grid-area: toTime;
+}
+
+#submitButton {
+  grid-area: submitBtn;
+}

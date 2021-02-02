@@ -9,7 +9,12 @@
     <p>{{ pumpsystem.slots | json }}</p>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-raised-button color="accent" [routerLink]="pumpsystem.id">
+    <button
+      mat-raised-button
+      color="accent"
+      routerLink="../pumpsystem"
+      [queryParams]="{ id: pumpsystem.id }"
+    >
       Details
     </button>
   </mat-card-actions>

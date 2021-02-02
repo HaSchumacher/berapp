@@ -1,1 +1,37 @@
-{{ pumpsystem$ | async | json }} {{ slots$ | async | json }}
+<section class="page" *ngIf="pumpsystem$ | async as pumpsystem">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        {{ pumpsystem.name }}
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="pumpsystem-content">
+      <app-add-slot-form (submit)="addSlot($event, pumpsystem)">
+      </app-add-slot-form>
+      <form [formGroup]="timelineForm" class="slots-view">
+        <h3>Slots</h3>
+        <mat-form-field>
+          <mat-label>Show slots in date range</mat-label>
+          <mat-date-range-input [rangePicker]="picker">
+            <input
+              [formControl]="fromControl"
+              #start
+              matStartDate
+              placeholder="Start date"
+            />
+            <input
+              [formControl]="toControl"
+              #end
+              matEndDate
+              placeholder="End date"
+            />
+          </mat-date-range-input>
+          <mat-datepicker-toggle matSuffix [for]="picker">
+          </mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
+        <app-slots-timeline [slots]="slots$ | async"></app-slots-timeline>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</section>

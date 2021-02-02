@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
 import { AuthService } from '@core/services';
 import { HttpClientModule } from '@angular/common/http';
 import { USER_SELECT_ROLES_DATA } from '@shared/user';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   imports: [
@@ -23,6 +24,7 @@ import { USER_SELECT_ROLES_DATA } from '@shared/user';
     BrowserAnimationsModule,
     LoggerModule.forRoot({ level: environment.ngxLogLevel }),
     HttpClientModule,
+    MatNativeDateModule,
   ],
   providers: [
     {
