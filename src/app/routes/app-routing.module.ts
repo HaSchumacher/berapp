@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuardService } from '@core/guards';
 import { AdminGuardService } from '@core/guards/admin-guard.service';
-import { ADMIN, PUMPSYSTEMS } from './routes';
+import { ADMIN, PUMPSYSTEMS, ROOT } from './routes';
 
 const routes: Routes = [
   {
@@ -24,7 +24,7 @@ const routes: Routes = [
   {
     path: '**',
     pathMatch: 'full',
-    redirectTo: PUMPSYSTEMS,
+    redirectTo: ROOT,
   },
 ];
 

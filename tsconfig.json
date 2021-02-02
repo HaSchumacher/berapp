@@ -22,7 +22,9 @@
       "@model": ["src/app/model"],
       "@utilities/*": ["src/app/utilities/*"],
       "@utilities": ["src/app/utilities"],
-      "@features/*": ["src/app/features/*"]
+      "@features/*": ["src/app/features/*"],
+      "@routes/*": ["src/app/routes/*"],
+      "@routes": ["src/app/routes"]
     }
   }
 }

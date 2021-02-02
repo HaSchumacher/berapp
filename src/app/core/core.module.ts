@@ -13,6 +13,7 @@ import { AuthService } from '@core/services';
 import { HttpClientModule } from '@angular/common/http';
 import { USER_SELECT_ROLES_DATA } from '@shared/user';
 import { MatNativeDateModule } from '@angular/material/core';
+import { NavigationService } from './services/control/navigation.service';
 
 @NgModule({
   imports: [
@@ -42,7 +43,10 @@ import { MatNativeDateModule } from '@angular/material/core';
   ],
 })
 export class CoreModule {
-  constructor(@Inject(LOGGER) @Optional() private readonly logger: Logger) {
+  constructor(
+    @Inject(LOGGER) @Optional() private readonly logger: Logger,
+    private readonly navigation: NavigationService
+  ) {
     this.logger?.trace('Init Core Module');
   }
 }
