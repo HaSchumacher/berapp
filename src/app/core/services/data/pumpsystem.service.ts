@@ -183,14 +183,12 @@ export class PumpsystemService {
           });
       }),
       switchMap((slot) =>
-        isNonNull(slot)
-          ? this.firestore
-              .collection(this.PUMPSYSTEM_COLLECTION)
-              .doc(pumpsystem.id)
-              .collection(slot.id)
-              .add(data)
-              .then((_) => null)
-          : throwError('Slot overlaps')
+        this.firestore
+          .collection(this.PUMPSYSTEM_COLLECTION)
+          .doc(pumpsystem.id)
+          .collection(slot.id)
+          .add(data)
+          .then((_) => null)
       )
     );
   }
