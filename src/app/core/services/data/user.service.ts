@@ -9,7 +9,7 @@ import { map, shareReplay } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class UserService {
-  private readonly USERS_COLLECTION: string = 'users';
+  public readonly USERS_COLLECTION: string = 'users';
   private readonly ROLES_COLLECTION: string = 'roles';
   private readonly ID_MAPPER: string;
   public readonly roles: Observable<string[]>;
