@@ -12,9 +12,17 @@ import {
   pluck,
   startWith,
   switchMap,
-  tap,
   withLatestFrom,
 } from 'rxjs/operators';
+
+/**
+ * Helper
+ */
+interface TimeLineData {
+  from: Date;
+  to: Date;
+  slots: Slot[];
+}
 
 @Component({
   selector: 'app-pumpsystem',
@@ -23,7 +31,7 @@ import {
 })
 export class PumpsystemComponent implements OnInit {
   private _pumpsystem$: Observable<Pumpsystem>;
-  private _slots$: Observable<Slot[]>;
+  private _timeLineData$: Observable<TimeLineData>;
 
   private readonly controlName_from: string = 'from';
   private readonly controlName_to: string = 'to';
@@ -31,7 +39,7 @@ export class PumpsystemComponent implements OnInit {
   private readonly initialFromValue: Date = getStartOfToday();
   private readonly initialToValue: Date = add(
     getStartOfToday(),
-    this.pumpsystemService.SLOT_MAX_RANGE
+    this.pumpsystemService.SLOT_MAX_RANGE - 1
   );
 
   public readonly timelineForm: FormGroup = new FormGroup({
@@ -58,8 +66,9 @@ export class PumpsystemComponent implements OnInit {
     );
 
     //this.timelineForm.valueChanges controls fire values weird
-    this._slots$ = this.toControl.valueChanges.pipe(
+    this._timeLineData$ = this.toControl.valueChanges.pipe(
       startWith(this.initialToValue),
+
       withLatestFrom(
         this.fromControl.valueChanges.pipe(startWith(this.initialFromValue)),
         this.pumpsystem$,
@@ -69,17 +78,16 @@ export class PumpsystemComponent implements OnInit {
         ({ from, to, pumpsystem }) =>
           isNonNull(from) && isNonNull(to) && isNonNull(pumpsystem)
       ),
+      map((args) => ({
+        ...args,
+        to: add(args.to, 1),
+      })),
       switchMap(({ from, to, pumpsystem }) =>
         combineLatest(
           pumpsystem.slots.map((id) =>
-            this.pumpsystemService.getSlotsWithIn(
-              new Date(from),
-              new Date(to),
-              pumpsystem.id,
-              id
-            )
+            this.pumpsystemService.getSlotsWithIn(from, to, pumpsystem.id, id)
           )
-        )
+        ).pipe(map((slots) => ({ from, to, slots })))
       )
     );
   }
@@ -98,8 +106,8 @@ export class PumpsystemComponent implements OnInit {
     return this._pumpsystem$;
   }
 
-  public get slots$(): Observable<Slot[]> {
-    return this._slots$;
+  public get timeLineData$(): Observable<TimeLineData> {
+    return this._timeLineData$;
   }
 
   public get toControl(): FormControl {

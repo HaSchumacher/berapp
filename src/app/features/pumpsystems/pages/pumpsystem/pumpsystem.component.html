@@ -31,9 +31,10 @@
           <mat-date-range-picker #picker></mat-date-range-picker>
         </mat-form-field>
         <app-slots-timeline
-          [slots]="slots$ | async"
-          [to]="toControl.value"
-          [from]="fromControl.value"
+          *ngIf="timeLineData$ | async as data"
+          [slots]="data.slots"
+          [to]="data.to"
+          [from]="data.from"
         >
         </app-slots-timeline>
       </form>
