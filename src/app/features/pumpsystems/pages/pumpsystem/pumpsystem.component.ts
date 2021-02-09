@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { PumpsystemService, StoreService } from '@core/services';
+import { TimeLineData } from '@features/pumpsystems/components/slots-timeline';
 import { PUMPSYSTEM_QUERY_PARAM_ID } from '@features/pumpsystems/routes/routes';
-import { Pumpsystem, Slot, SlotData } from '@model/pumpsystem';
+import { Pumpsystem, SlotData } from '@model/pumpsystem';
 import { add, getStartOfToday, isNonNull } from '@utilities';
 import { combineLatest, Observable } from 'rxjs';
 import {
@@ -14,15 +15,6 @@ import {
   switchMap,
   withLatestFrom,
 } from 'rxjs/operators';
-
-/**
- * Helper
- */
-interface TimeLineData {
-  from: Date;
-  to: Date;
-  slots: Slot[];
-}
 
 @Component({
   selector: 'app-pumpsystem',

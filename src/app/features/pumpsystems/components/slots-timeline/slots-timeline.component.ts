@@ -1,7 +1,8 @@
 import { Component, Input } from '@angular/core';
-import { Slot, SlotData } from '@model/pumpsystem';
+import { SlotData } from '@model/pumpsystem';
 import { isNonNull } from '@utilities';
 import { ChartType, Formatter, Row } from 'angular-google-charts';
+import { TimeLineData } from './TimeLineData';
 
 @Component({
   selector: 'app-slots-timeline',
@@ -13,16 +14,38 @@ export class SlotsTimelineComponent {
   private _options: any;
   public readonly CHART_TYPE: ChartType = ChartType.Timeline;
 
-  @Input()
-  public set slots(value: Slot[]) {
+  @Input('data')
+  public set DATA(value: TimeLineData) {
     if (isNonNull(value)) {
+      // set min max: Problem min max have to be outside range of data -> workaround
+      // TODO store orig data when need in future
+      // TODO modify label to orig range
+      value.slots = value.slots.map((slot) => ({
+        ...slot,
+        data: slot.data
+          .filter(
+            (data) =>
+              data.from.getTime() <= value.to.getTime() &&
+              data.to.getTime() >= value.from.getTime()
+          )
+          .map((data) => ({
+            ...data,
+            from:
+              data.from.getTime() < value.from.getTime()
+                ? value.from
+                : data.from,
+            to: data.to.getTime() > value.to.getTime() ? value.to : data.to,
+          })),
+      }));
+
       this._options = {
         hAxis: {
-          minValue: this.from,
-          maxValue: this.to,
+          minValue: value.from,
+          maxValue: value.to,
         },
       };
-      this._data = value.reduce(
+      // set data
+      this._data = value.slots.reduce(
         (out, next) => [
           ...out,
           ...next.data.map((data) => [next.id, data.from, data.to]),
@@ -65,17 +88,6 @@ export class SlotsTimelineComponent {
   public dataTooltipFn: (data: SlotData) => string = (data: SlotData) =>
     String((data.to.getTime() - data.from.getTime()) / 1000 / 60 / 60) ??
     'qwer';
-
-  /** Left bound
-   *
-   */
-  @Input()
-  public from: Date;
-  /**
-   * Right bound
-   */
-  @Input()
-  public to: Date;
 
   public get data(): Row[] {
     return this._data;
