@@ -11,7 +11,7 @@ const routes: Routes = [
       import('@features/pumpsystems/pumpsystems.module').then(
         (module) => module.PumpsystemsModule
       ),
-    canLoad: [AuthGuardService],
+    canActivate: [AuthGuardService],
   },
   {
     path: ADMIN,
@@ -19,7 +19,7 @@ const routes: Routes = [
       import('@features/admin/admin.module').then(
         (module) => module.AdminModule
       ),
-    canLoad: [AdminGuardService],
+    canActivate: [AdminGuardService],
   },
   {
     path: '**',

@@ -1,0 +1,25 @@
+<mat-nav-list class="route-tree-list" *ngIf="routes && routes.length > 0">
+  <ng-container [ngSwitch]="!!route.children" *ngFor="let route of routes">
+    <mat-accordion *ngSwitchCase="true">
+      <mat-expansion-panel class="expansion-panel">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ route.name }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-route-tree [_level]="_level + 1" [routes]="route.children">
+        </app-route-tree>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <a
+      mat-list-item
+      routerLinkActive="active-route"
+      [routerLink]="route.path"
+      *ngSwitchCase="false"
+    >
+      <span [style.paddingLeft.px]="16 * _level">
+        {{ route.name }}
+      </span>
+    </a>
+  </ng-container>
+</mat-nav-list>

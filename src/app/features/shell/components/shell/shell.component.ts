@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { MediaService, StoreService } from '@core/services';
-import { FieldTemplatesService } from '@core/services/data/field-templates.service';
-import { User } from '@model/auth/User';
-import { debug } from 'console';
-import { filter, switchMap } from 'rxjs/operators';
+import { Route } from '@model/routing';
+import { ADMIN_FEAUTURE, PUMPSYSTEMS_FEAUTURE, ROOT } from '@routes';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-shell',
@@ -11,18 +11,28 @@ import { filter, switchMap } from 'rxjs/operators';
   styleUrls: ['./shell.component.scss'],
 })
 export class ShellComponent {
+  public readonly home: string = ROOT;
+  public readonly routes$: Observable<Route[]>;
+
   constructor(
     public readonly media: MediaService,
-    public readonly store: StoreService,
-    public readonly fieldTemplate: FieldTemplatesService,
+    public readonly store: StoreService
   ) {
-    this.store.user$
-      .pipe( filter(x=> x != null),
-        switchMap((user) =>
-        this.fieldTemplate.getFields(user)
-      )
-      )
-      .subscribe({next: (response)=> console.log("field = "  + response)});
-      
+    this.routes$ = this.store.user$.pipe(
+      map((user) =>
+        user == null || !user.data.superadmin
+          ? [PUMPSYSTEMS_FEAUTURE]
+          : [PUMPSYSTEMS_FEAUTURE, ADMIN_FEAUTURE]
+      ),
+      map((routes) => this.createAbsolutePaths(routes))
+    );
+  }
+
+  private createAbsolutePaths(routes: Route[], prefix: string = ''): Route[] {
+    return routes?.map((route) => ({
+      name: route.name,
+      path: `${prefix}/${route.path}`,
+      children: this.createAbsolutePaths(route.children, route.path),
+    }));
   }
 }

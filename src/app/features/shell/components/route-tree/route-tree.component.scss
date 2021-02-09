@@ -1,0 +1,14 @@
+app-route-tree {
+  .route-tree-list {
+    padding-top: 0;
+  }
+
+  .expansion-panel {
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .mat-expansion-panel-body {
+    padding: 0;
+  }
+}

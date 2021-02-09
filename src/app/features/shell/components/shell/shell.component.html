@@ -3,7 +3,7 @@
     <button mat-icon-button (click)="sidenav.toggle()">
       <mat-icon>menu</mat-icon>
     </button>
-    <button mat-button>{{ store.appName }}</button>
+    <button [routerLink]="home" mat-button>{{ store.appName }}</button>
     <span class="flex-spacer"></span>
     <ng-container
       *ngIf="(store.user$ | async) !== undefined"
@@ -25,6 +25,7 @@
       [opened]="!(media.small$ | async)"
       [mode]="(media.small$ | async) ? 'over' : 'side'"
     >
+      <app-route-tree [routes]="routes$ | async"></app-route-tree>
     </mat-sidenav>
     <mat-sidenav-content id="sidenavContent">
       <router-outlet></router-outlet>

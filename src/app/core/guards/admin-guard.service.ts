@@ -1,20 +1,27 @@
 import { Injectable } from '@angular/core';
-import { CanLoad, Route, UrlSegment } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  CanActivate,
+  RouterStateSnapshot,
+} from '@angular/router';
 import { StoreService } from '@core/services';
 import { Observable, of } from 'rxjs';
-import { filter, map, retry, retryWhen, switchMap } from 'rxjs/operators';
+import { filter, map, switchMap } from 'rxjs/operators';
 import { AuthGuardService } from './auth-guard.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AdminGuardService implements CanLoad {
+export class AdminGuardService implements CanActivate {
   constructor(
     private readonly store: StoreService,
     private readonly authguard: AuthGuardService
   ) {}
-  canLoad(route: Route, segments: UrlSegment[]): Observable<boolean> {
-    return this.authguard.canLoad(route, segments).pipe(
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<boolean> {
+    return this.authguard.canActivate(route, state).pipe(
       switchMap((passed) =>
         passed
           ? this.store.user$.pipe(

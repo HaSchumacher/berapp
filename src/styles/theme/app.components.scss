@@ -1,2 +1,5 @@
+@import "../../app/features/shell/components/route-tree/route-tree.component.scss-theme.scss";
+
 @mixin app-components-theme($theme) {
+  @include app-route-tree-theme($theme);
 }

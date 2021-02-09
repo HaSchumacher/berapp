@@ -1,0 +1,10 @@
+@import "~@angular/material/theming";
+
+@mixin app-route-tree-theme($theme) {
+  $primary: map-get($theme, primary);
+
+  app-route-tree .active-route {
+    background: mat-color($primary) !important;
+    color: mat-color($primary, default-contrast) !important;
+  }
+}

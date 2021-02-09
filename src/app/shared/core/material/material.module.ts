@@ -11,9 +11,13 @@ import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatListModule } from '@angular/material/list';
 @NgModule({
   exports: [
     MatDialogModule,
+    MatListModule,
+    MatExpansionModule,
     MatDatepickerModule,
     MatTableModule,
     MatButtonModule,
