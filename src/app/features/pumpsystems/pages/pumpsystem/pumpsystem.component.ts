@@ -1,10 +1,10 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { PumpsystemService, StoreService } from '@core/services';
 import { PUMPSYSTEM_QUERY_PARAM_ID } from '@features/pumpsystems/routes/routes';
 import { Pumpsystem, Slot, SlotData } from '@model/pumpsystem';
-import { addDays, isNonNull } from '@utilities';
+import { add, getStartOfToday, isNonNull } from '@utilities';
 import { combineLatest, Observable } from 'rxjs';
 import {
   filter,
@@ -28,11 +28,15 @@ export class PumpsystemComponent implements OnInit {
   private readonly controlName_from: string = 'from';
   private readonly controlName_to: string = 'to';
 
+  private readonly initialFromValue: Date = getStartOfToday();
+  private readonly initialToValue: Date = add(
+    getStartOfToday(),
+    this.pumpsystemService.SLOT_MAX_RANGE
+  );
+
   public readonly timelineForm: FormGroup = new FormGroup({
-    [this.controlName_from]: new FormControl(new Date()),
-    [this.controlName_to]: new FormControl(
-      addDays(new Date(), this.pumpsystemService.SLOT_MAX_RANGE)
-    ),
+    [this.controlName_from]: new FormControl(this.initialFromValue),
+    [this.controlName_to]: new FormControl(this.initialToValue),
   });
 
   constructor(
@@ -55,9 +59,9 @@ export class PumpsystemComponent implements OnInit {
 
     //this.timelineForm.valueChanges controls fire values weird
     this._slots$ = this.toControl.valueChanges.pipe(
-      startWith(addDays(new Date(), this.pumpsystemService.SLOT_MAX_RANGE)),
+      startWith(this.initialToValue),
       withLatestFrom(
-        this.fromControl.valueChanges.pipe(startWith(new Date())),
+        this.fromControl.valueChanges.pipe(startWith(this.initialFromValue)),
         this.pumpsystem$,
         (to, from, pumpsystem) => ({ to, from, pumpsystem })
       ),

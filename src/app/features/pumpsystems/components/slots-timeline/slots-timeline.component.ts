@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Slot, SlotData } from '@model/pumpsystem';
 import { isNonNull } from '@utilities';
 import { ChartType, Formatter, Row } from 'angular-google-charts';
@@ -8,14 +8,20 @@ import { ChartType, Formatter, Row } from 'angular-google-charts';
   templateUrl: './slots-timeline.component.html',
   styleUrls: ['./slots-timeline.component.scss'],
 })
-export class SlotsTimelineComponent implements OnInit {
+export class SlotsTimelineComponent {
   private _data: Row[];
   private _options: any;
   public readonly CHART_TYPE: ChartType = ChartType.Timeline;
 
   @Input()
   public set slots(value: Slot[]) {
-    if (isNonNull(value))
+    if (isNonNull(value)) {
+      this._options = {
+        hAxis: {
+          minValue: this.from,
+          maxValue: this.to,
+        },
+      };
       this._data = value.reduce(
         (out, next) => [
           ...out,
@@ -23,6 +29,7 @@ export class SlotsTimelineComponent implements OnInit {
         ],
         [] as Row[]
       );
+    }
   }
 
   formatters: Formatter[] = [
@@ -69,15 +76,6 @@ export class SlotsTimelineComponent implements OnInit {
    */
   @Input()
   public to: Date;
-
-  public ngOnInit(): void {
-    this._options = {
-      hAxis: {
-        minValue: this.from,
-        maxValue: this.to,
-      },
-    };
-  }
 
   public get data(): Row[] {
     return this._data;

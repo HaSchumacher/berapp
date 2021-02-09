@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Pumpsystem, Slot, SlotData } from '@model/pumpsystem';
-import { forkJoin, Observable, throwError } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { User } from '@model/auth';
 import '@firebase/firestore';
 import { map, share, switchMap, take } from 'rxjs/operators';
-import { addDays } from '@utilities/date';
-import { isNonNull } from '@utilities';
+import { add } from '@utilities/date';
 
 @Injectable({
   providedIn: 'root',
@@ -23,9 +22,9 @@ export class PumpsystemService {
     let helper: Pick<Pumpsystem, 'id'> = { id: null };
     this.ID_MAPPER = Object.keys(helper)[0];
   }
-  /**TODO query 'in' applicable for only 10 values 
-   * workaround split query at 10 
-  */
+  /**TODO query 'in' applicable for only 10 values
+   * workaround split query at 10
+   */
   public getPumpSystems(of: User): Observable<Pumpsystem[]> {
     if (of == null || of.data == null || of.data.permissions == null)
       throw new Error(`No permissions in ${of}`);
@@ -64,7 +63,7 @@ export class PumpsystemService {
       .doc(pumpsystemId)
       .collection<SlotData>(slotId, (ref) =>
         ref
-          .where('from', '>=', addDays(from, -this.SLOT_MAX_RANGE))
+          .where('from', '>=', add(from, -this.SLOT_MAX_RANGE))
           .where('from', '<=', to)
       )
       .valueChanges()
@@ -121,7 +120,7 @@ export class PumpsystemService {
                     current.to.getTime() > last.to.getTime() ? current : last),
                 {
                   by: null,
-                  to: addDays(data.to, -this.SLOT_MAX_RANGE),
+                  to: add(data.to, -this.SLOT_MAX_RANGE),
                   from: null,
                 }
               );
@@ -136,7 +135,7 @@ export class PumpsystemService {
                       : last),
                 {
                   by: null,
-                  from: addDays(data.from, this.SLOT_MAX_RANGE),
+                  from: add(data.from, this.SLOT_MAX_RANGE),
                   to: null,
                 }
               );
@@ -149,7 +148,7 @@ export class PumpsystemService {
                     current.to.getTime() > last.to.getTime() ? current : last),
                 {
                   by: null,
-                  to: addDays(data.to, -this.SLOT_MAX_RANGE),
+                  to: add(data.to, -this.SLOT_MAX_RANGE),
                   from: null,
                 }
               );
@@ -164,7 +163,7 @@ export class PumpsystemService {
                       : last),
                 {
                   by: null,
-                  from: addDays(data.from, this.SLOT_MAX_RANGE),
+                  from: add(data.from, this.SLOT_MAX_RANGE),
                   to: null,
                 }
               );

@@ -1,2 +1,2 @@
 export { isNonNull } from './isNonNull';
-export { addDays } from './date';
+export * from './date';

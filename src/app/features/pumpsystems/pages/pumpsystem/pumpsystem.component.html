@@ -30,7 +30,12 @@
           </mat-datepicker-toggle>
           <mat-date-range-picker #picker></mat-date-range-picker>
         </mat-form-field>
-        <app-slots-timeline [slots]="slots$ | async"></app-slots-timeline>
+        <app-slots-timeline
+          [slots]="slots$ | async"
+          [to]="toControl.value"
+          [from]="fromControl.value"
+        >
+        </app-slots-timeline>
       </form>
     </mat-card-content>
   </mat-card>
