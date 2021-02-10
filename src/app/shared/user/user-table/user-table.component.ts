@@ -49,9 +49,7 @@ export class UserTableComponent {
   ];
 
   @Output()
-  public readonly selectionChange: EventEmitter<
-    Partial<UserData>
-  > = new EventEmitter<Partial<UserData>>();
+  public readonly selectionChange: EventEmitter<Partial<UserData>> = new EventEmitter<Partial<UserData>>();
 
   public get data(): UserData[] {
     return this._data;
