@@ -3,10 +3,13 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { User } from '@model/auth';
 import { FieldTemplate } from '@model/fieldTemplate';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { isNonNull } from '@utilities';
 import { concat, EMPTY, forkJoin, from, merge, Observable } from 'rxjs';
 import { concatAll, filter, map, mergeAll, mergeMap, share, take, tap } from 'rxjs/operators';
 =======
+=======
+>>>>>>> first profile overview
 import { Observable } from 'rxjs';
 import { share } from 'rxjs/operators';
 >>>>>>> first profile overview
@@ -42,6 +45,9 @@ export class FieldTemplatesService {
   //  Paginate when more then 10 values in fields !!!
 =======
    
+<<<<<<< HEAD
+>>>>>>> first profile overview
+=======
 >>>>>>> first profile overview
    public getFields(of: User): Observable<FieldTemplate[]> {
     if (of == null || of.data == null || of.data.permissions == null)
