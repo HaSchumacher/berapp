@@ -1,25 +1,10 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { User } from '@model/auth';
+import { User } from '@model';
 import { FieldTemplate } from '@model/fieldTemplate';
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-import { isNonNull } from '@utilities';
-import { concat, EMPTY, forkJoin, from, merge, Observable } from 'rxjs';
-import { concatAll, filter, map, mergeAll, mergeMap, share, take, tap } from 'rxjs/operators';
-=======
-=======
->>>>>>> first profile overview
-import { Observable } from 'rxjs';
-import { share } from 'rxjs/operators';
->>>>>>> first profile overview
-=======
-import { isNonNull } from '@utilities';
-import { concat, EMPTY, forkJoin, from, merge, Observable } from 'rxjs';
-import { concatAll, filter, map, mergeAll, mergeMap, share, take, tap } from 'rxjs/operators';
->>>>>>> try adding pagewise loading fields from user array more then 10elements
-import { UserService } from './user.service';
+import { Observable, forkJoin } from 'rxjs';
+import { share, mergeMap } from 'rxjs/operators';
+import { UserService } from '.';
 
 @Injectable({
   providedIn: 'root'
@@ -29,11 +14,7 @@ export class FieldTemplatesService {
   
   constructor(private readonly firestore: AngularFirestore, private readonly userService: UserService) {
   }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> try adding pagewise loading fields from user array more then 10elements
-  
+
   //Return Observable for ten or less fields
   private fieldsHelper (of: User, arr: String[]) :Observable<FieldTemplate[]> {
     return this.firestore.collection<FieldTemplate>(
@@ -52,15 +33,6 @@ export class FieldTemplatesService {
   }
   
   //  Paginate when more then 10 values in fields !!!
-<<<<<<< HEAD
-=======
-   
-<<<<<<< HEAD
->>>>>>> first profile overview
-=======
->>>>>>> first profile overview
-=======
->>>>>>> try adding pagewise loading fields from user array more then 10elements
    public getFields(of: User): Observable<FieldTemplate[]> {
     if (of == null || of.data == null || of.data.permissions == null)
       throw new Error(`No permissions in ${of}`);
@@ -78,22 +50,6 @@ export class FieldTemplatesService {
       }
    }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> try adding pagewise loading fields from user array more then 10elements
-   
-
-   
-   public addTemplate( template:FieldTemplate, of: User)  {
-     if(
-       template == null ||
-       template.fieldRegion ==null ||
-      
-       template.name == null||
-       of.data == null ||
-<<<<<<< HEAD
-=======
    public addTemplate( template:FieldTemplate, of: User) {
     if(
       template == null ||
@@ -101,9 +57,6 @@ export class FieldTemplatesService {
       template.id == null ||
       template.name == null||
       of.data == null ||
->>>>>>> first profile overview
-=======
->>>>>>> try adding pagewise loading fields from user array more then 10elements
       of == null||
       of.data.fields ==null 
       ) throw new Error ('Given Arguments must not be nullable!');
