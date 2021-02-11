@@ -2,9 +2,14 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { User } from '@model/auth';
 import { FieldTemplate } from '@model/fieldTemplate';
+<<<<<<< HEAD
 import { isNonNull } from '@utilities';
 import { concat, EMPTY, forkJoin, from, merge, Observable } from 'rxjs';
 import { concatAll, filter, map, mergeAll, mergeMap, share, take, tap } from 'rxjs/operators';
+=======
+import { Observable } from 'rxjs';
+import { share } from 'rxjs/operators';
+>>>>>>> first profile overview
 import { UserService } from './user.service';
 
 @Injectable({
@@ -15,6 +20,7 @@ export class FieldTemplatesService {
   
   constructor(private readonly firestore: AngularFirestore, private readonly userService: UserService) {
   }
+<<<<<<< HEAD
   
   //Return Observable for ten or less fields
   private fieldsHelper (of: User, arr: String[]) :Observable<FieldTemplate[]> {
@@ -34,6 +40,9 @@ export class FieldTemplatesService {
   }
   
   //  Paginate when more then 10 values in fields !!!
+=======
+   
+>>>>>>> first profile overview
    public getFields(of: User): Observable<FieldTemplate[]> {
     if (of == null || of.data == null || of.data.permissions == null)
       throw new Error(`No permissions in ${of}`);
@@ -51,6 +60,7 @@ export class FieldTemplatesService {
       }
    }
 
+<<<<<<< HEAD
    
 
    
@@ -61,6 +71,15 @@ export class FieldTemplatesService {
       
        template.name == null||
        of.data == null ||
+=======
+   public addTemplate( template:FieldTemplate, of: User) {
+    if(
+      template == null ||
+      template.fieldRegion ==null ||
+      template.id == null ||
+      template.name == null||
+      of.data == null ||
+>>>>>>> first profile overview
       of == null||
       of.data.fields ==null 
       ) throw new Error ('Given Arguments must not be nullable!');
