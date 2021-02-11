@@ -1,0 +1,11 @@
+<ng-container *ngIf="this.store.user$ |async as user ">
+   <h1>Welcome to your Profile page: {{user.data.name}}</h1>
+
+  <div> Here you can change your name, email and fieldtemplates </div>
+  <div>current Email: {{user.data.email}}</div>
+  
+  <!-- Suchfeld -->
+  <div> current FieltTemplates: <span *ngFor="let field of fields |async"> {{field.name}} : {{field.irrigationDuration}}</span></div>
+  
+  
+  </ng-container>

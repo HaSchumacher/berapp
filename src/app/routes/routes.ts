@@ -5,6 +5,7 @@ import { Route } from '@model/routing';
 export const PUMPSYSTEMS: string = 'pumpsystems';
 export const ADMIN: string = 'admin';
 export const ROOT: string = '';
+export const PROFILE: string = 'profile';
 
 export const ADMIN_FEAUTURE: Route = {
   name: 'Admin',
@@ -16,3 +17,8 @@ export const PUMPSYSTEMS_FEAUTURE: Route = {
   path: PUMPSYSTEMS,
   children: PUMPSYSTEMS_ROUTES,
 };
+export const PROFILE_FEATURE: Route= {
+  name: 'Profile',
+  path: PROFILE,
+  // children: PROFILE_ROUTES
+  };

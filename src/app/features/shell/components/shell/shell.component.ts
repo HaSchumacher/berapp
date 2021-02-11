@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MediaService, StoreService } from '@core/services';
 import { Route } from '@model/routing';
-import { ADMIN_FEAUTURE, PUMPSYSTEMS_FEAUTURE, ROOT } from '@routes';
+import { ADMIN_FEAUTURE, PROFILE_FEATURE, PUMPSYSTEMS_FEAUTURE, ROOT } from '@routes';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -21,8 +21,8 @@ export class ShellComponent {
     this.routes$ = this.store.user$.pipe(
       map((user) =>
         user == null || !user.data.superadmin
-          ? [PUMPSYSTEMS_FEAUTURE]
-          : [PUMPSYSTEMS_FEAUTURE, ADMIN_FEAUTURE]
+          ? [PUMPSYSTEMS_FEAUTURE,PROFILE_FEATURE]
+          : [PUMPSYSTEMS_FEAUTURE,PROFILE_FEATURE, ADMIN_FEAUTURE]
       ),
       map((routes) => this.createAbsolutePaths(routes))
     );

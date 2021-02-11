@@ -1,6 +1,6 @@
 export interface FieldTemplate {
   readonly name: string;
-  readonly irrigation_duration: number;
-  readonly field_region: number;
+  readonly irrigationDuration: number;
+  readonly fieldRegion: number;
   readonly id: string;
 }

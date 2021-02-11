@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuardService } from '@core/guards';
 import { AdminGuardService } from '@core/guards/admin-guard.service';
-import { ADMIN, PUMPSYSTEMS, ROOT } from './routes';
+import { ADMIN, PROFILE, PUMPSYSTEMS, ROOT } from './routes';
 
 const routes: Routes = [
   {
@@ -21,6 +21,15 @@ const routes: Routes = [
       ),
     canActivate: [AdminGuardService],
   },
+  {
+    path: PROFILE,
+    loadChildren: () => 
+    import('@features/profile/profile.module').then(
+      (module) => module.ProfileModule
+    ),
+    
+  }
+  ,
   {
     path: '**',
     pathMatch: 'full',
