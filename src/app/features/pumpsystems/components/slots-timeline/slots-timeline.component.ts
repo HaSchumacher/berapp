@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { SlotData } from '@model/pumpsystem';
 import { isNonNull } from '@utilities';
-import { ChartType, Formatter, Row } from 'angular-google-charts';
+import { ChartType, Column, Formatter, Row } from 'angular-google-charts';
 import { TimeLineData } from './TimeLineData';
 
 @Component({
@@ -12,6 +12,13 @@ import { TimeLineData } from './TimeLineData';
 export class SlotsTimelineComponent {
   private _data: Row[];
   private _options: any;
+  public readonly columns: Column[] = [
+    { type: 'string', id: 'Slot' },
+    { type: 'string', id: 'Label' },
+    { type: 'string', role: 'style' },
+    { type: 'date', id: 'Start' },
+    { type: 'date', id: 'End' },
+  ];
   public readonly CHART_TYPE: ChartType = ChartType.Timeline;
 
   @Input('data')
@@ -48,10 +55,25 @@ export class SlotsTimelineComponent {
       this._data = value.slots.reduce(
         (out, next) => [
           ...out,
-          ...next.data.map((data) => [next.id, data.from, data.to]),
+          ...next.data.map((data) => [
+            next.id,
+            this.dataLabelFn(data),
+            'opacity:1;',
+            data.from,
+            data.to,
+          ]),
         ],
-        [] as Row[]
+        value.slots
+          .filter((slot) => slot.data.length === 0)
+          .map((slot) => [
+            slot.id,
+            '',
+            'opacity:0;',
+            value.from,
+            value.to,
+          ]) as Row[]
       );
+      console.log(this._data);
     }
   }
 
