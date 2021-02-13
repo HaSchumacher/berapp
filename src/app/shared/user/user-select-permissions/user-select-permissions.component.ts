@@ -12,12 +12,17 @@ export class UserSelectPermissionsComponent {
   public user: UserData;
 
   @Output()
-  public readonly selectedRole: EventEmitter<any> = new EventEmitter<any>();
+  public readonly selectedRole: EventEmitter<
+    Partial<UserData>
+  > = new EventEmitter<Partial<UserData>>();
 
   constructor(@Inject(USER_SELECT_ROLES_DATA) public readonly roles: any[]) {}
 
-  public onSelectionChange(object: string, role: any) {
-    this.user.permissions[object] = role;
-    this.selectedRole.emit(this.user);
+  public onSelectionChange(pumpsystem: string, role: any) {
+    const update: Partial<UserData> = {
+      id: this.user.id,
+      permissions: { [pumpsystem]: role },
+    };
+    this.selectedRole.emit(update);
   }
 }

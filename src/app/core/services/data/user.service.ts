@@ -4,6 +4,7 @@ import { UserData } from '@model/auth';
 import { from, Observable } from 'rxjs';
 import { User } from '@firebase/auth-types';
 import { map, shareReplay } from 'rxjs/operators';
+import { isNonNull } from '@utilities';
 
 @Injectable({
   providedIn: 'root',
@@ -48,14 +49,32 @@ export class UserService {
       .valueChanges({ idField: this.ID_MAPPER });
   }
 
-  public updateUserData(value: UserData): Observable<void> {
+  public updateUserData(value: Partial<UserData>): Observable<void> {
     if (value == null || value.id == null) throw new Error('id undefined');
-    else
+    else {
+      const update: Partial<UserData> = { ...value };
+      delete update.id;
+      // map permissions object, so firestore does an actual partial update instead of replacing it
+      if (isNonNull(value.permissions)) {
+        update.permissions = {};
+        const MAP_NAME_HELPER_OBJ: Pick<UserData, 'permissions'> = {
+          permissions: undefined,
+        };
+        const MAP_NAME = Object.keys(MAP_NAME_HELPER_OBJ)[0];
+
+        Object.keys(value.permissions).forEach(
+          (pumpsystem) =>
+            (update[`${MAP_NAME}.${pumpsystem}`] =
+              value.permissions[pumpsystem])
+        );
+      }
+
       return from(
         this.firestore
           .collection(this.USERS_COLLECTION)
           .doc(value.id)
-          .update(value)
+          .update(update)
       );
+    }
   }
 }
