@@ -73,8 +73,7 @@ export class SlotsTimelineComponent {
             value.to,
           ]) as Row[]
       );
-      console.log(this._data);
-    }
+    } else this._data = undefined;
   }
 
   formatters: Formatter[] = [

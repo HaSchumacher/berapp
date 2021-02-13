@@ -4,10 +4,11 @@ import { ActivatedRoute } from '@angular/router';
 import { PumpsystemService, StoreService } from '@core/services';
 import { TimeLineData } from '@features/pumpsystems/components/slots-timeline';
 import { PUMPSYSTEM_QUERY_PARAM_ID } from '@features/pumpsystems/routes/routes';
-import { Pumpsystem, SlotData } from '@model/pumpsystem';
+import { Pumpsystem, Slot, SlotData } from '@model/pumpsystem';
 import { add, getStartOfToday, isNonNull } from '@utilities';
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest, Observable, of } from 'rxjs';
 import {
+  catchError,
   filter,
   map,
   pluck,
@@ -74,13 +75,18 @@ export class PumpsystemComponent implements OnInit {
         ...args,
         to: add(args.to, 1),
       })),
-      switchMap(({ from, to, pumpsystem }) =>
-        combineLatest(
-          pumpsystem.slots.map((id) =>
-            this.pumpsystemService.getSlotsWithIn(from, to, pumpsystem.id, id)
-          )
-        ).pipe(map((slots) => ({ from, to, slots })))
-      )
+      switchMap(({ from, to, pumpsystem }) => {
+        try {
+          return combineLatest(
+            pumpsystem.slots.map((id) =>
+              this.pumpsystemService.getSlotsWithIn(from, to, pumpsystem.id, id)
+            )
+          ).pipe(map((slots) => ({ from, to, slots })));
+        } catch (error) {
+          console.error('TODO handle error', error);
+          return of(null);
+        }
+      })
     );
   }
 
