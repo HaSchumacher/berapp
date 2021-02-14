@@ -114,7 +114,13 @@ export class PumpsystemComponent implements OnInit {
                   })
                 )
             )
-          ).pipe(map((slots) => ({ from, to, slots })));
+          ).pipe(
+            map((slots) => ({
+              from,
+              to,
+              slots: slots.sort((a, b) => a.id.localeCompare(b.id)),
+            }))
+          );
         } catch (error) {
           console.error('TODO handle error', error);
           return of(null);
