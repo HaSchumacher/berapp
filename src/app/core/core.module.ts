@@ -9,7 +9,7 @@ import { Logger, LOGGER } from '@model/logging';
 import { AUTHENTICATOR } from '@shared/auth';
 import { LoggerModule, NGXLogger } from 'ngx-logger';
 import { environment } from 'src/environments/environment';
-import { AuthService } from '@core/services';
+import { AuthService, UserService } from '@core/services';
 import { HttpClientModule } from '@angular/common/http';
 import { USER_SELECT_ROLES_DATA } from '@shared/user';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -34,7 +34,8 @@ import { NavigationService } from './services/control/navigation.service';
     },
     {
       provide: USER_SELECT_ROLES_DATA,
-      useValue: ['admin', 'writer', 'reader'], //TODO fetch from firestore
+      useFactory: (userService: UserService) => userService.roles$,
+      deps: [UserService],
     },
     {
       provide: LOGGER,

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
 import { UserData } from '@model/auth';
+import { Observable } from 'rxjs';
 import { USER_SELECT_ROLES_DATA } from './token';
 
 @Component({
@@ -16,7 +17,9 @@ export class UserSelectPermissionsComponent {
     Partial<UserData>
   > = new EventEmitter<Partial<UserData>>();
 
-  constructor(@Inject(USER_SELECT_ROLES_DATA) public readonly roles: any[]) {}
+  constructor(
+    @Inject(USER_SELECT_ROLES_DATA) public readonly roles: Observable<any[]>
+  ) {}
 
   public onSelectionChange(pumpsystem: string, role: any) {
     const update: Partial<UserData> = {
