@@ -1,0 +1,6 @@
+<mat-checkbox
+  *ngIf="user"
+  (change)="onSelectionChange($event.checked)"
+  [checked]="user.verified"
+>
+</mat-checkbox>

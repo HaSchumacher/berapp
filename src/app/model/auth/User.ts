@@ -1,5 +1,4 @@
 import { User as FireBaseUser } from '@firebase/auth-types';
-import { FieldTemplate } from '@model/fieldTemplate';
 
 export interface User extends FireBaseUser {
   data: UserData;
@@ -11,6 +10,7 @@ export interface UserData {
   permissions: Permissions;
   id: string;
   email: string;
+  verified: boolean;
   fields: Array<String>;
 }
 

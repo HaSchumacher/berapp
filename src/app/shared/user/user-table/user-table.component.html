@@ -6,9 +6,24 @@
   multiTemplateDataRows
 >
   <!-- rows with data -->
-  <ng-container [matColumnDef]="column" *ngFor="let column of columns">
+  <ng-container
+    [matColumnDef]="column"
+    *ngFor="let column of columns"
+    [ngSwitch]="column"
+  >
     <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
-    <td mat-cell *matCellDef="let user">{{ user[column] }}</td>
+    <ng-container *ngSwitchCase="'verified'">
+      <td mat-cell *matCellDef="let user">
+        <app-user-verified-checkbox
+          [user]="user"
+          (verifiedChange)="selectionChange.emit($event)"
+        >
+        </app-user-verified-checkbox>
+      </td>
+    </ng-container>
+    <ng-container *ngSwitchDefault>
+      <td mat-cell *matCellDef="let user">{{ user[column] }}</td>
+    </ng-container>
   </ng-container>
   <!-- user detail -->
   <ng-container matColumnDef="expandedUser">

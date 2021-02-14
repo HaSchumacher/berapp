@@ -29,8 +29,10 @@ export class UserTableComponent {
   public _expandedUser: UserData;
 
   @Input()
-  public columns: string[] = ['name', 'email', 'id'];
+  public columns: string[] = ['name', 'email', 'id', 'verified'];
 
   @Output()
-  public readonly selectionChange: EventEmitter<any> = new EventEmitter<any>();
+  public readonly selectionChange: EventEmitter<
+    Partial<UserData>
+  > = new EventEmitter<Partial<UserData>>();
 }
