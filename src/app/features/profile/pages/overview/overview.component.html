@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <ng-container *ngIf="this.store.user$ |async as user" class="profilepage">
   <mat-card><h1>Willkommen auf deiner Profilseite: <span class="otherFontSizeandbold">{{user.data.name}}</span></h1>
   <div> Von hier aus können Sie Ihre Email Adresse, Ihren Anzeigenamen und ihre eingestellten Beregnungspläne Ihrer Felder aktualisieren.</div>
@@ -34,8 +33,6 @@
       <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
    </div>
   </mat-card>
-</ng-container>
-=======
 <ng-container *ngIf="this.store.user$ |async as user ">
    <h1>Welcome to your Profile page: {{user.data.name}}</h1>
 
@@ -47,4 +44,3 @@
   
   
   </ng-container>
->>>>>>> first profile overview
