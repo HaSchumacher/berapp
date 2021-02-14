@@ -11,8 +11,8 @@
     *ngFor="let column of columns"
     [ngSwitch]="column"
   >
-    <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
     <ng-container *ngSwitchCase="'verified'">
+      <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
       <td mat-cell *matCellDef="let user">
         <app-user-verified-checkbox
           [user]="user"
@@ -21,7 +21,21 @@
         </app-user-verified-checkbox>
       </td>
     </ng-container>
+    <ng-container *ngSwitchCase="'expand'">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let user">
+        <button
+          mat-icon-button
+          (click)="_expandedUser = _expandedUser === user ? null : user"
+        >
+          <mat-icon>
+            {{ _expandedUser == user ? "expand_less" : "expand_more" }}
+          </mat-icon>
+        </button>
+      </td>
+    </ng-container>
     <ng-container *ngSwitchDefault>
+      <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
       <td mat-cell *matCellDef="let user">{{ user[column] }}</td>
     </ng-container>
   </ng-container>
@@ -38,11 +52,7 @@
     </td>
   </ng-container>
   <tr mat-header-row *matHeaderRowDef="columns"></tr>
-  <tr
-    mat-row
-    *matRowDef="let row; columns: columns"
-    (click)="_expandedUser = _expandedUser === row ? null : row"
-  ></tr>
+  <tr mat-row *matRowDef="let user; columns: columns"></tr>
   <tr
     class="user-detail-row"
     style="height: 0px"

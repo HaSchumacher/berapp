@@ -29,7 +29,7 @@ export class UserTableComponent {
   public _expandedUser: UserData;
 
   @Input()
-  public columns: string[] = ['name', 'email', 'id', 'verified'];
+  public columns: string[] = ['name', 'email', 'id', 'verified', 'expand'];
 
   @Output()
   public readonly selectionChange: EventEmitter<
