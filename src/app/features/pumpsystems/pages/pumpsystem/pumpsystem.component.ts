@@ -90,6 +90,7 @@ export class PumpsystemComponent implements OnInit {
 
                     slot.data
                       .map((data) => data.by)
+                      .filter(isNonNull)
                       .forEach((id) => userIds.add(id));
 
                     const unknownIds: string[] = Array.from(
