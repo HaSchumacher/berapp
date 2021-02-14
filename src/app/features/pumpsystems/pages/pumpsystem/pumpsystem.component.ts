@@ -1,19 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { PumpsystemService, StoreService } from '@core/services';
+import { PumpsystemService, StoreService, UserService } from '@core/services';
 import { TimeLineData } from '@features/pumpsystems/components/slots-timeline';
 import { PUMPSYSTEM_QUERY_PARAM_ID } from '@features/pumpsystems/routes/routes';
-import { Pumpsystem, Slot, SlotData } from '@model/pumpsystem';
+import { Pumpsystem, SlotData } from '@model/pumpsystem';
 import { add, getStartOfToday, isNonNull } from '@utilities';
 import { combineLatest, Observable, of } from 'rxjs';
 import {
-  catchError,
   filter,
   map,
   pluck,
   startWith,
   switchMap,
+  take,
+  tap,
   withLatestFrom,
 } from 'rxjs/operators';
 
@@ -25,6 +26,7 @@ import {
 export class PumpsystemComponent implements OnInit {
   private _pumpsystem$: Observable<Pumpsystem>;
   private _timeLineData$: Observable<TimeLineData>;
+  private _userNameCache: Map<string, string> = new Map<string, string>();
 
   private readonly controlName_from: string = 'from';
   private readonly controlName_to: string = 'to';
@@ -43,10 +45,11 @@ export class PumpsystemComponent implements OnInit {
   constructor(
     private readonly route: ActivatedRoute,
     public readonly store: StoreService,
-    private readonly pumpsystemService: PumpsystemService
+    private readonly pumpsystemService: PumpsystemService,
+    private readonly userService: UserService
   ) {}
 
-  public ngOnInit(): void {
+  public ngOnInit() {
     this._pumpsystem$ = this.route.queryParams.pipe(
       pluck(PUMPSYSTEM_QUERY_PARAM_ID),
       switchMap((id) =>
@@ -79,7 +82,36 @@ export class PumpsystemComponent implements OnInit {
         try {
           return combineLatest(
             pumpsystem.slots.map((id) =>
-              this.pumpsystemService.getSlotsWithIn(from, to, pumpsystem.id, id)
+              this.pumpsystemService
+                .getSlotsWithIn(from, to, pumpsystem.id, id)
+                .pipe(
+                  switchMap(async (slot) => {
+                    const userIds: Set<string> = new Set<string>();
+
+                    slot.data
+                      .map((data) => data.by)
+                      .forEach((id) => userIds.add(id));
+
+                    const unknownIds: string[] = Array.from(
+                      userIds.values()
+                    ).filter((id) => !this._userNameCache.has(id));
+
+                    await Promise.all(
+                      unknownIds.map((id) =>
+                        this.userService
+                          .getData({ uid: id } as any)
+                          .pipe(
+                            take(1),
+                            tap((user) =>
+                              this._userNameCache.set(user.id, user.name)
+                            )
+                          )
+                          .toPromise()
+                      )
+                    );
+                    return slot;
+                  })
+                )
             )
           ).pipe(map((slots) => ({ from, to, slots })));
         } catch (error) {
@@ -89,6 +121,10 @@ export class PumpsystemComponent implements OnInit {
       })
     );
   }
+
+  public readonly dataLabelFn: (data: SlotData) => string = ({
+    by,
+  }: SlotData) => this._userNameCache.get(by) ?? 'Unknown';
 
   public addSlot(data: SlotData, pumpsystem: Pumpsystem): void {
     this.store.user$
