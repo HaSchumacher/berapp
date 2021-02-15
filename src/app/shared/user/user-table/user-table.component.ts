@@ -7,6 +7,7 @@ import {
 } from '@angular/animations';
 import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { UserData } from '@model/auth';
+import { isNonNull } from '@utilities';
 
 @Component({
   selector: 'app-user-table',
@@ -24,8 +25,17 @@ import { UserData } from '@model/auth';
   ],
 })
 export class UserTableComponent {
+  private _data: UserData[];
+
   @Input()
-  public data: UserData[];
+  public set data(value: UserData[]) {
+    this._data = value;
+    if (isNonNull(value) && isNonNull(this._expandedUser)) {
+      this._expandedUser = value.find(
+        (user) => user.id === this._expandedUser.id
+      );
+    }
+  }
   public _expandedUser: UserData;
 
   @Input()
@@ -35,4 +45,8 @@ export class UserTableComponent {
   public readonly selectionChange: EventEmitter<
     Partial<UserData>
   > = new EventEmitter<Partial<UserData>>();
+
+  public get data(): UserData[] {
+    return this._data;
+  }
 }

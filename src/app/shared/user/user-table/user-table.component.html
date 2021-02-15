@@ -26,10 +26,10 @@
       <td mat-cell *matCellDef="let user">
         <button
           mat-icon-button
-          (click)="_expandedUser = _expandedUser === user ? null : user"
+          (click)="_expandedUser = _expandedUser?.id == user.id ? null : user"
         >
           <mat-icon>
-            {{ _expandedUser == user ? "expand_less" : "expand_more" }}
+            {{ _expandedUser?.id == user.id ? "expand_less" : "expand_more" }}
           </mat-icon>
         </button>
       </td>
@@ -43,7 +43,9 @@
   <ng-container matColumnDef="expandedUser">
     <td mat-cell *matCellDef="let user" [attr.colspan]="columns.length">
       <app-user-select-permissions
-        [@detailExpand]="user == _expandedUser ? 'expanded' : 'collapsed'"
+        [@detailExpand]="
+          user.id == _expandedUser?.id ? 'expanded' : 'collapsed'
+        "
         class="user-detail"
         [user]="_expandedUser"
         (selectedRole)="selectionChange.emit($event)"
