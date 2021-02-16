@@ -14,20 +14,23 @@
   display: flex;
   justify-content: center;
 }
-  table {
-    width: 100%;
-  }
+table {
+  width: 100%;
+}
 
-  .mat-form-field {
-    font-size: 14px;
-    width: 100%;
-  }
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
 
-  td{
-    width: 50%;
-    padding: 12px 0px 12px 0px;
-  }
-  th {
-    width: 50%;
-    padding-right: 24px;
-  }
+td{
+  width: 50%;
+  padding: 12px 0px 12px 0px;
+}
+th {
+  width: 50%;
+  padding-right: 24px;
+}
+.form{
+  margin-top: 3rem;
+}
