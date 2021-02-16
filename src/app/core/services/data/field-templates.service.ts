@@ -14,7 +14,6 @@ export class FieldTemplatesService {
   
   constructor(private readonly firestore: AngularFirestore, private readonly userService: UserService) {
   }
-
   //Return Observable for ten or less fields
   private fieldsHelper (of: User, arr: String[]) :Observable<FieldTemplate[]> {
     return this.firestore.collection<FieldTemplate>(
@@ -50,13 +49,16 @@ export class FieldTemplatesService {
       }
    }
 
-   public addTemplate( template:FieldTemplate, of: User) {
-    if(
-      template == null ||
-      template.fieldRegion ==null ||
-      template.id == null ||
-      template.name == null||
-      of.data == null ||
+   
+
+   
+   public addTemplate( template:FieldTemplate, of: User)  {
+     if(
+       template == null ||
+       template.fieldRegion ==null ||
+      
+       template.name == null||
+       of.data == null ||
       of == null||
       of.data.fields ==null 
       ) throw new Error ('Given Arguments must not be nullable!');
