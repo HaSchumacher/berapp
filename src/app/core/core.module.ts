@@ -8,7 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Logger, LOGGER } from '@model/logging';
 import { AUTHENTICATOR } from '@shared/auth';
 import { LoggerModule, NGXLogger } from 'ngx-logger';
-import { environment } from 'src/environments/environment';
+import { environment } from '@environment';
 import { AuthService, UserService } from '@core/services';
 import { HttpClientModule } from '@angular/common/http';
 import { USER_SELECT_ROLES_DATA } from '@shared/user';
@@ -17,7 +17,7 @@ import { NavigationService } from './services/control/navigation.service';
 
 @NgModule({
   imports: [
-    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireModule.initializeApp(environment.firebase.options),
     AngularFireAnalyticsModule,
     AngularFirestoreModule,
     AngularFireAuthModule,

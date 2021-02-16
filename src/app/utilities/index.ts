@@ -1,2 +1,3 @@
-export { isNonNull } from './isNonNull';
+export * from './isNonNull';
 export * from './date';
+export * from './array';

@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Pumpsystem, Slot, SlotData } from '@model/pumpsystem';
-import { forkJoin, Observable } from 'rxjs';
+import { combineLatest, forkJoin, Observable } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { User } from '@model/auth';
 import '@firebase/firestore';
-import { map, share, switchMap, take } from 'rxjs/operators';
-import { add } from '@utilities/date';
+import { map, share, shareReplay, switchMap, take } from 'rxjs/operators';
+import { add, divide, flatten } from '@utilities';
+import { environment } from '@environment';
 
 @Injectable({
   providedIn: 'root',
@@ -22,18 +23,23 @@ export class PumpsystemService {
     let helper: Pick<Pumpsystem, 'id'> = { id: null };
     this.ID_MAPPER = Object.keys(helper)[0];
   }
-  /**TODO query 'in' applicable for only 10 values
-   * workaround split query at 10
-   */
+
   public getPumpSystems(of: User): Observable<Pumpsystem[]> {
     if (of == null || of.data == null || of.data.permissions == null)
       throw new Error(`No permissions in ${of}`);
-    return this.firestore
-      .collection<Pumpsystem>(this.PUMPSYSTEM_COLLECTION, (ref) =>
-        ref.where('__name__', 'in', Object.keys(of.data.permissions))
+    return combineLatest(
+      divide(
+        Object.keys(of.data.permissions),
+        environment.firebase.firestore.whereQuery_IN_maxArrayLength
+      ).map((chunk) =>
+        this.firestore
+          .collection<Pumpsystem>(this.PUMPSYSTEM_COLLECTION, (ref) =>
+            ref.where('__name__', 'in', chunk)
+          )
+          .valueChanges({ idField: this.ID_MAPPER })
+          .pipe(shareReplay(1))
       )
-      .valueChanges({ idField: this.ID_MAPPER })
-      .pipe(share());
+    ).pipe(map(flatten));
   }
 
   /**

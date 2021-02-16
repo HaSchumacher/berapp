@@ -16,6 +16,7 @@
     "paths": {
       "@core/*": ["src/app/core/*"],
       "@core": ["src/app/core"],
+      "@environment": ["src/environments/environment.ts"],
       "@shared/*": ["src/app/shared/*"],
       "@shared": ["src/app/shared"],
       "@model/*": ["src/app/model/*"],

@@ -7,13 +7,18 @@ import { NgxLoggerLevel } from 'ngx-logger';
 export const environment = {
   production: false,
   firebase: {
-    apiKey: 'AIzaSyCsYAJyhUd1xDPHJSt-VQ1yx5bGI8chsDg',
-    authDomain: 'irrigation-system-sandbox.firebaseapp.com',
-    projectId: 'irrigation-system-sandbox',
-    storageBucket: 'irrigation-system-sandbox.appspot.com',
-    messagingSenderId: '739320641843',
-    appId: '1:739320641843:web:9a577acea69db6aec62646',
-    measurementId: 'G-ND92KNYDEG',
+    options: {
+      apiKey: 'AIzaSyCsYAJyhUd1xDPHJSt-VQ1yx5bGI8chsDg',
+      authDomain: 'irrigation-system-sandbox.firebaseapp.com',
+      projectId: 'irrigation-system-sandbox',
+      storageBucket: 'irrigation-system-sandbox.appspot.com',
+      messagingSenderId: '739320641843',
+      appId: '1:739320641843:web:9a577acea69db6aec62646',
+      measurementId: 'G-ND92KNYDEG',
+    },
+    firestore: {
+      whereQuery_IN_maxArrayLength: 10,
+    },
   },
   ngxLogLevel: NgxLoggerLevel.TRACE,
 };
