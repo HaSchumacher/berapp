@@ -88,39 +88,9 @@ export class SlotsTimelineComponent {
     } else this._data = undefined;
   }
 
-  formatters: Formatter[] = [
-    {
-      colIndex: 2,
-      formatter: {
-        format: (data, column) => {
-          for (let row = 0; row < data.getNumberOfRows(); row++) {
-            const element = data.getValue(row, column);
-            data.setFormattedValue(row, column, this.dataTooltipFn(element));
-          }
-        },
-      },
-    },
-    {
-      colIndex: 1,
-      formatter: {
-        format: (data, column) => {
-          for (let row = 0; row < data.getNumberOfRows(); row++) {
-            const element = data.getValue(row, column);
-            data.setFormattedValue(row, column, this.dataLabelFn(element));
-          }
-        },
-      },
-    },
-  ];
-
   @Input()
   public dataLabelFn: (data: SlotData) => string = (data: SlotData) =>
     data.by ?? 'Unknown';
-
-  @Input()
-  public dataTooltipFn: (data: SlotData) => string = (data: SlotData) =>
-    String((data.to.getTime() - data.from.getTime()) / 1000 / 60 / 60) ??
-    'qwer';
 
   @Output()
   public readonly select: EventEmitter<SlotDataItem> = new EventEmitter<SlotDataItem>();
