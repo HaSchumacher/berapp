@@ -7,9 +7,9 @@ import {
 import {
   PumpsystemCardComponent,
   SlotsTimelineComponent,
+  AddSlotFormComponent,
 } from '@features/pumpsystems/components';
 import { CoreModule } from '@shared/core';
-import { AddSlotFormComponent } from './components/add-slot-form/add-slot-form.component';
 
 @NgModule({
   declarations: [
