@@ -8,6 +8,7 @@ import {
   PumpsystemCardComponent,
   SlotsTimelineComponent,
   AddSlotFormComponent,
+  SlotDataDialogComponent,
 } from '@features/pumpsystems/components';
 import { CoreModule } from '@shared/core';
 
@@ -18,6 +19,7 @@ import { CoreModule } from '@shared/core';
     PumpsystemComponent,
     SlotsTimelineComponent,
     AddSlotFormComponent,
+    SlotDataDialogComponent,
   ],
   imports: [CoreModule, PumpsystemsRoutingModule],
 })

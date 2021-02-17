@@ -1,0 +1,10 @@
+<h2 mat-dialog-title>{{ item.by }}</h2>
+<mat-dialog-content>
+  {{ item | json }}
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="warn" (click)="deleteClick.emit(item)">
+    Delete
+  </button>
+  <button mat-button mat-dialog-close cdkFocusInitial>Cancel</button>
+</mat-dialog-actions>

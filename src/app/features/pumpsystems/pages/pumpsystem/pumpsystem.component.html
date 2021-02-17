@@ -33,6 +33,7 @@
         <app-slots-timeline
           [data]="timeLineData$ | async"
           [dataLabelFn]="dataLabelFn"
+          (select)="openSlotDataDialog($event)"
         >
         </app-slots-timeline>
       </form>

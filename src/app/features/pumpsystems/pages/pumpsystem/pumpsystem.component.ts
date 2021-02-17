@@ -2,18 +2,22 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { PumpsystemService, StoreService, UserService } from '@core/services';
+import { SlotDataDialogService } from '@features/pumpsystems/components';
 import { TimeLineData } from '@features/pumpsystems/components/slots-timeline';
 import { PUMPSYSTEM_QUERY_PARAM_ID } from '@features/pumpsystems/routes/routes';
-import { Pumpsystem, SlotData } from '@model/pumpsystem';
+import { Pumpsystem, SlotData, SlotDataItem } from '@model/pumpsystem';
 import { add, getStartOfToday, isNonNull } from '@utilities';
 import { combineLatest, Observable, of } from 'rxjs';
 import {
   filter,
   map,
+  mapTo,
   pluck,
   startWith,
   switchMap,
+  switchMapTo,
   take,
+  takeUntil,
   tap,
   withLatestFrom,
 } from 'rxjs/operators';
@@ -46,7 +50,8 @@ export class PumpsystemComponent implements OnInit {
     private readonly route: ActivatedRoute,
     public readonly store: StoreService,
     private readonly pumpsystemService: PumpsystemService,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    public readonly slotDataDialog: SlotDataDialogService
   ) {}
 
   public ngOnInit() {
@@ -157,5 +162,20 @@ export class PumpsystemComponent implements OnInit {
 
   public get fromControl(): FormControl {
     return this.timelineForm.controls[this.controlName_from] as FormControl;
+  }
+
+  public openSlotDataDialog(item: SlotDataItem) {
+    const closed$ = this.slotDataDialog.open(item);
+    this.slotDataDialog.deleteClick$
+      .pipe(
+        takeUntil(closed$),
+        withLatestFrom(this.pumpsystem$),
+        switchMap(([data, pumpsystem]) =>
+          this.pumpsystemService
+            .deleteSlot(data, pumpsystem)
+            .pipe(mapTo(this.slotDataDialog.close()))
+        )
+      )
+      .subscribe();
   }
 }

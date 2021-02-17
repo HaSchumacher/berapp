@@ -1,0 +1,1 @@
+export { Identifiable } from './Identifiable';

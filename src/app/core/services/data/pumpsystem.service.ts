@@ -1,28 +1,26 @@
 import { Injectable } from '@angular/core';
-import { Pumpsystem, Slot, SlotData } from '@model/pumpsystem';
-import { combineLatest, forkJoin, Observable } from 'rxjs';
+import { Pumpsystem, Slot, SlotData, SlotDataItem } from '@model/pumpsystem';
+import { combineLatest, forkJoin, from, Observable, of } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { User } from '@model/auth';
 import '@firebase/firestore';
 import { map, share, shareReplay, switchMap, take } from 'rxjs/operators';
-import { add, divide, flatten } from '@utilities';
+import { add, divide, flatten, isNonNull } from '@utilities';
 import { environment } from '@environment';
+import { ID_MAPPER } from './IdMapper';
+import { AuthService } from '../auth';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PumpsystemService {
   private readonly PUMPSYSTEM_COLLECTION: string = 'pumpsystems';
-  private readonly ID_MAPPER: string;
   /**
    * 3 Days
    */
   public readonly SLOT_MAX_RANGE: number = 3;
 
-  constructor(private readonly firestore: AngularFirestore) {
-    let helper: Pick<Pumpsystem, 'id'> = { id: null };
-    this.ID_MAPPER = Object.keys(helper)[0];
-  }
+  constructor(private readonly firestore: AngularFirestore) {}
 
   public getPumpSystems(of: User): Observable<Pumpsystem[]> {
     if (of == null || of.data == null || of.data.permissions == null)
@@ -36,7 +34,7 @@ export class PumpsystemService {
           .collection<Pumpsystem>(this.PUMPSYSTEM_COLLECTION, (ref) =>
             ref.where('__name__', 'in', chunk)
           )
-          .valueChanges({ idField: this.ID_MAPPER })
+          .valueChanges({ idField: ID_MAPPER })
           .pipe(shareReplay(1))
       )
     ).pipe(map(flatten));
@@ -72,11 +70,11 @@ export class PumpsystemService {
           .where('from', '>=', add(from, -this.SLOT_MAX_RANGE))
           .where('from', '<=', to)
       )
-      .valueChanges()
+      .valueChanges({ idField: ID_MAPPER })
       .pipe(
         map((data) =>
           data.map((x: any) => ({
-            by: x.by,
+            ...x,
             from: x.from.toDate(),
             to: x.to.toDate(),
           }))
@@ -128,6 +126,7 @@ export class PumpsystemService {
                   by: null,
                   to: add(data.to, -this.SLOT_MAX_RANGE),
                   from: null,
+                  id: null,
                 }
               );
 
@@ -143,6 +142,7 @@ export class PumpsystemService {
                   by: null,
                   from: add(data.from, this.SLOT_MAX_RANGE),
                   to: null,
+                  id: null,
                 }
               );
 
@@ -156,6 +156,7 @@ export class PumpsystemService {
                   by: null,
                   to: add(data.to, -this.SLOT_MAX_RANGE),
                   from: null,
+                  id: null,
                 }
               );
 
@@ -171,6 +172,7 @@ export class PumpsystemService {
                   by: null,
                   from: add(data.from, this.SLOT_MAX_RANGE),
                   to: null,
+                  id: null,
                 }
               );
 
@@ -195,6 +197,20 @@ export class PumpsystemService {
           .add(data)
           .then((_) => null)
       )
+    );
+  }
+
+  public deleteSlot(
+    slot: SlotDataItem,
+    pumpsystem: Pumpsystem
+  ): Observable<void> {
+    return from(
+      this.firestore
+        .collection(this.PUMPSYSTEM_COLLECTION)
+        .doc(pumpsystem.id)
+        .collection(slot.slotId)
+        .doc(slot.id)
+        .delete()
     );
   }
 }

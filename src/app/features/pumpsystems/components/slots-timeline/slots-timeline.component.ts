@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { SlotData } from '@model/pumpsystem';
+import { SlotData, SlotDataItem } from '@model/pumpsystem';
 import { isNonNull } from '@utilities';
 import {
   ChartSelectionChangedEvent,
@@ -8,7 +8,6 @@ import {
   Formatter,
   Row,
 } from 'angular-google-charts';
-import { TimeLineItem } from './TimeLineItem';
 import { TimeLineData } from './TimeLineData';
 
 @Component({
@@ -17,6 +16,7 @@ import { TimeLineData } from './TimeLineData';
   styleUrls: ['./slots-timeline.component.scss'],
 })
 export class SlotsTimelineComponent {
+  private objects: Map<number, SlotDataItem>;
   private _data: Row[];
   private _options: any;
   public readonly columns: Column[] = [
@@ -31,6 +31,8 @@ export class SlotsTimelineComponent {
   @Input('data')
   public set DATA(value: TimeLineData) {
     if (isNonNull(value)) {
+      let index: number = 0;
+      this.objects = new Map<number, SlotDataItem>();
       // set min max: Problem min max have to be outside range of data -> workaround
       // TODO store orig data when need in future
       // TODO modify label to orig range
@@ -60,16 +62,19 @@ export class SlotsTimelineComponent {
       };
       // set data
       this._data = value.slots.reduce(
-        (out, next) => [
-          ...out,
-          ...next.data.map((data) => [
-            next.id,
-            this.dataLabelFn(data),
-            'opacity:1;',
-            data.from,
-            data.to,
-          ]),
-        ],
+        (out, next) =>
+          out.concat(
+            next.data.map((data) => {
+              this.objects.set(index++, { ...data, slotId: next.id });
+              return [
+                next.id,
+                this.dataLabelFn(data),
+                'opacity:1;',
+                data.from,
+                data.to,
+              ];
+            })
+          ),
         value.slots
           .filter((slot) => slot.data.length === 0)
           .map((slot) => [
@@ -118,7 +123,7 @@ export class SlotsTimelineComponent {
     'qwer';
 
   @Output()
-  public readonly select: EventEmitter<TimeLineItem> = new EventEmitter<TimeLineItem>();
+  public readonly select: EventEmitter<SlotDataItem> = new EventEmitter<SlotDataItem>();
 
   public get data(): Row[] {
     return this._data;
@@ -129,14 +134,6 @@ export class SlotsTimelineComponent {
   }
 
   public _onSelect(change: ChartSelectionChangedEvent): void {
-    const rowData = this.data[change.selection[0].row];
-    this.select.emit({
-      slot: {
-        by: rowData[1] as string,
-        from: rowData[3] as Date,
-        to: rowData[4] as Date,
-      },
-      slotId: rowData[0] as string,
-    });
+    this.select.emit(this.objects.get(change.selection[0].row));
   }
 }
