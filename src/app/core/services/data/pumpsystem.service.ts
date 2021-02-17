@@ -110,8 +110,8 @@ export class PumpsystemService {
             !slot.data.some(
               (x) =>
                 // overlap
-                data.to.getTime() >= x.from.getTime() &&
-                data.from.getTime() <= x.to.getTime()
+                data.to.getTime() > x.from.getTime() &&
+                data.from.getTime() < x.to.getTime()
             )
         );
         // find best slot: least time wasted to last and next slot
