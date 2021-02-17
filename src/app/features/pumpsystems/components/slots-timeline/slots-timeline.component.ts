@@ -1,7 +1,14 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { SlotData } from '@model/pumpsystem';
 import { isNonNull } from '@utilities';
-import { ChartType, Column, Formatter, Row } from 'angular-google-charts';
+import {
+  ChartSelectionChangedEvent,
+  ChartType,
+  Column,
+  Formatter,
+  Row,
+} from 'angular-google-charts';
+import { TimeLineItem } from './TimeLineItem';
 import { TimeLineData } from './TimeLineData';
 
 @Component({
@@ -110,11 +117,26 @@ export class SlotsTimelineComponent {
     String((data.to.getTime() - data.from.getTime()) / 1000 / 60 / 60) ??
     'qwer';
 
+  @Output()
+  public readonly select: EventEmitter<TimeLineItem> = new EventEmitter<TimeLineItem>();
+
   public get data(): Row[] {
     return this._data;
   }
 
   public get options(): any {
     return this._options;
+  }
+
+  public _onSelect(change: ChartSelectionChangedEvent): void {
+    const rowData = this.data[change.selection[0].row];
+    this.select.emit({
+      slot: {
+        by: rowData[1] as string,
+        from: rowData[3] as Date,
+        to: rowData[4] as Date,
+      },
+      slotId: rowData[0] as string,
+    });
   }
 }
