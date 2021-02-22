@@ -101,7 +101,6 @@ export class SlotsTimelineComponent {
   }
 
   public _onSelect(change: ChartSelectionChangedEvent): void {
-    debugger;
     this.select.emit(this.objects.get(change.selection[0].row));
   }
 }
