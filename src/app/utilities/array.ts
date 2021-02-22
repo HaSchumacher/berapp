@@ -11,5 +11,5 @@ export function divide<T>(
 }
 
 export function flatten<T>(array: T[][]): T[] {
-  return array.reduce((out, next) => out.concat(next), []);
+  return array.reduce((out, next) => out.concat(next));
 }
