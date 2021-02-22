@@ -21,6 +21,12 @@
         </app-user-verified-checkbox>
       </td>
     </ng-container>
+    <ng-container *ngSwitchCase="'superadmin'">
+      <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
+      <td mat-cell *matCellDef="let user">
+        <mat-icon>{{ user.superadmin ? "check" : "close" }}</mat-icon>
+      </td>
+    </ng-container>
     <ng-container *ngSwitchCase="'expand'">
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let user">
