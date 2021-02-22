@@ -75,15 +75,12 @@ export class SlotsTimelineComponent {
               ];
             })
           ),
+        []
+      );
+      this._data = this._data.concat(
         value.slots
           .filter((slot) => slot.data.length === 0)
-          .map((slot) => [
-            slot.id,
-            '',
-            'opacity:0;',
-            value.from,
-            value.to,
-          ]) as Row[]
+          .map((slot) => [slot.id, '', 'opacity:0;', value.from, value.to])
       );
     } else this._data = undefined;
   }
@@ -104,6 +101,7 @@ export class SlotsTimelineComponent {
   }
 
   public _onSelect(change: ChartSelectionChangedEvent): void {
+    debugger;
     this.select.emit(this.objects.get(change.selection[0].row));
   }
 }
