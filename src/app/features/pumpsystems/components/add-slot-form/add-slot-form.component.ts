@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { SlotData } from '@model';
 
 @Component({
@@ -13,14 +13,17 @@ export class AddSlotFormComponent {
   public readonly controlName_toDate: string = 'toDate';
   public readonly controlName_toTime: string = 'toTime';
   public readonly addSlotForm: FormGroup = new FormGroup({
-    [this.controlName_fromDate]: new FormControl(),
-    [this.controlName_fromTime]: new FormControl(),
-    [this.controlName_toDate]: new FormControl(),
-    [this.controlName_toTime]: new FormControl(),
+    [this.controlName_fromDate]: new FormControl(
+      new Date(),
+      Validators.required
+    ),
+    [this.controlName_fromTime]: new FormControl(null, Validators.required),
+    [this.controlName_toDate]: new FormControl(new Date(), Validators.required),
+    [this.controlName_toTime]: new FormControl(null, Validators.required),
   });
 
   @Output()
-  public readonly submit: EventEmitter<
+  public readonly submittedData: EventEmitter<
     Pick<SlotData, 'from' | 'to'>
   > = new EventEmitter<Pick<SlotData, 'from' | 'to'>>();
 
@@ -40,7 +43,7 @@ export class AddSlotFormComponent {
         Number(toTime.substring(0, 2)),
         Number(toTime.substring(3, 5))
       );
-      this.submit.emit({ from, to });
+      this.submittedData.emit({ from, to });
     }
   }
 }

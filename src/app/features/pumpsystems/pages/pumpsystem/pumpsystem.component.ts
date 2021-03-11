@@ -141,6 +141,7 @@ export class PumpsystemComponent implements OnInit {
   public addSlot(data: SlotData, pumpsystem: Pumpsystem): void {
     this.store.user$
       .pipe(
+        take(1),
         switchMap((user) =>
           this.pumpsystemService.addSlot({ ...data, by: user.uid }, pumpsystem)
         )
