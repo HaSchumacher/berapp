@@ -1,4 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { SlotData, SlotDataItem } from '@model/pumpsystem';
 import { isNonNull } from '@utilities';
 import {
@@ -6,6 +12,7 @@ import {
   ChartType,
   Column,
   Formatter,
+  GoogleChartComponent,
   Row,
 } from 'angular-google-charts';
 import { TimeLineData } from './TimeLineData';
@@ -16,6 +23,8 @@ import { TimeLineData } from './TimeLineData';
   styleUrls: ['./slots-timeline.component.scss'],
 })
 export class SlotsTimelineComponent {
+  @ViewChild(GoogleChartComponent)
+  chart: GoogleChartComponent;
   private objects: Map<number, SlotDataItem>;
   private _data: Row[];
   private _options: any;
@@ -55,6 +64,7 @@ export class SlotsTimelineComponent {
       }));
 
       this._options = {
+        tooltip: { trigger: 'none' },
         hAxis: {
           minValue: value.from,
           maxValue: value.to,
@@ -101,6 +111,8 @@ export class SlotsTimelineComponent {
   }
 
   public _onSelect(change: ChartSelectionChangedEvent): void {
+    this.chart.chartWrapper.draw();
+
     this.select.emit(this.objects.get(change.selection[0].row));
   }
 }
